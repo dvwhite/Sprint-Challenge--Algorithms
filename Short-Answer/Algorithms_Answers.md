@@ -98,3 +98,17 @@ Total Eggs Broken     `f`
 Therefore, the optimal solution is to set `f` equal to `n+l` if possible,
 otherwise, based on the constraints of the problem, set it to the highest
 possible value closest to `n` such that it satisfies all constraints
+
+Algorithm:
+
+```
+def reduce_broken_eggs(f, n):
+    f = n + 1
+    return f
+```
+
+I have no idea how this would actually be accomplished in a concrete example.
+Maybe setting higher values of `f` equal to `n` is possible by putting eggs
+in little easter baskets with parachutes. I can only speak to what the
+problem specification detailed and there are no further details with which
+to design the optimal solution.

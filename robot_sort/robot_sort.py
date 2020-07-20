@@ -1,3 +1,6 @@
+import ipdb
+
+
 class SortingRobot:
     def __init__(self, l):
         """
@@ -98,10 +101,30 @@ class SortingRobot:
         """
         Sort the robot's list.
         """
-        finished = self.light_is_on()  # Light up when sorting is complete
-        while not finished:
+        # ipdb.set_trace()
 
-            finished = self.light_is_on()
+        # Initialize the item at first position
+        if not self.compare_item() and not self.can_move_right():
+            self.set_light_on()  # There is no list to sort
+        else:
+            self.swap_item()
+            self.move_right()
+
+        while not self.light_is_on():  # Light up when sorting is complete
+            self.set_light_on()
+            if self.can_move_right():
+                if self.compare_item() == -1:
+                    self.swap_item()
+                    self.set_light_off()
+                self.move_right()
+            else:
+                # self.swap_item()
+                while self.can_move_left():
+                    self.move_left()  # reset position
+                    # if self.compare_item() == 1:
+                    #     self.swap_item()
+                    #     self.set_light_off()
+        self.swap_item()
 
 
 if __name__ == "__main__":
@@ -110,7 +133,7 @@ if __name__ == "__main__":
 
     l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1,
          45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
-
+    l1 = [15, 41, 15]
     robot = SortingRobot(l)
 
     robot.sort()

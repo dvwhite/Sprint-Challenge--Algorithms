@@ -3,14 +3,12 @@ Your function should take in a single parameter (a string `word`)
 Your function should return a count of how many occurences of ***"th"*** occur within `word`. Case matters.
 Your function must utilize recursion. It cannot contain any loops.
 '''
-#import ipdb
 
 
 def count_th(word):
     # 'th' is a substring, so split the word into
     # substrings until you reach the base case
 
-    # ipdb.set_trace()
     # Base case
     if len(word) < 2:
         return 0

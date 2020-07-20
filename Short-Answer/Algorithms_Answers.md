@@ -32,83 +32,50 @@ Understand:
 The problem is asking us to create an algorithm to minimize the number of
 broken eggs assuming the existence of the building, the building has floors,
 and there is an ample supply of eggs, and eggs break if they are on a floor
-at or above `f`
+at or above `f`.
 
-There is still some information missing from the description that would help
-me to better understand the function and how it would operate. For instance,
-it would help to know when the eggs are thrown off and how frequently they
-are thrown off. Is it once per floor, or is it at a specified interval? This
-information is not listed in the problem so I can't use it to create an
-optimal solution.
+Since this is called highest floor, I must assume that the problem
+wants the highest value of f since the grading rubric lists that we should use
+searching algorithms. I must also assume that we are throwing eggs off at
+each floor and trying to see which highest floor causes the eggs to break.
 
 Plan:
-Given the currently available information, I can only control for one variable,
-and that is the player's current floor, which I will call `floor_player`.
-Regardless of how often eggs are dropped, the best way to minimize the number
-of broken eggs is to get the player or thing dropping the eggs to a floor that
-is less than `f`. Therefore, the optimal solution will be to reduce the player's
-floor as soon as possible to minimize how many eggs break. To figure out the
-optimal floor `f` in an `n` story building on which the least eggs break, it would be
-any floor less than `f`.
+Given the currently available information, I could do a linear search through
+the floors until I have found the highest floor that doesn't break the egg.
 
-For simplicity, I will assume that the eggs are carried by the person, player,
-or actor that is dropping them and thus contained by that object
+However, the best way would be to use binary search and split the floors in half
+to get the mid floor, k, and check whether the kth floor broke an egg,
+and if it didn't, we continue by taking the midpoint of the next section,
+and checking if the egg dropped from that floor would break, and so on,
+until we find the highest floor.
+
+If the egg broke at the first midpoint then we'd search first in the midpoint
+between 1 and k-1, and continue to reduce the number of available floors by 2
+until we reach the last floor that breaks the egg or there are no more floors to search.
+This divide and conquer approach would reduce the time complexity to O(logn).
+The linear search would run in O(n), but I would recommend using the binary search method.
 
 Execute:
 
 The optimal solution would be to set the value of `f` to the highest value
-possible. Since eggs break at height `f` or above, and there are `n` floors,
-then we should set `f` == `n`. This operation would ensure that all eggs
-dropped would not break, which would minimize the amount of eggs dropped to 1
-if we can only set `f` equal to a maximum of `n`.
-
-If there is no way to set `f` equal to `n` because of the stipulation of it
-being >= `f` and this requires there to be a floor above `f`, then it would be
-optimal to set `f` equal to `n-l`.
-
-This would be somewhat close to a greedy approach and could potentially occur
-in O(1) if we merely set the value of `f` to equal to the desired value of `n`/`n-l`
-as per the above.
-
-Reflect:
-
-There are some brute force methodologies that we could use, such as assuming some
-dynamics of the problem to be true. For instance, if we assumed that one egg was
-thrown by floor, and there were 10 total floors, then we could add up the
-eggs broken when ascending the floors from 0 based on the value of `f` as below:
-
-n = 10
-
-```
-Total Eggs Broken     `f`
-------------------    ---
-0                     11
-1                     10
-2                     9
-3                     8
-4                     7
-5                     6
-6                     5
-7                     4
-8                     3
-9                     2
-10                    1
-```
-
-Therefore, the optimal solution is to set `f` equal to `n+l` if possible,
-otherwise, based on the constraints of the problem, set it to the highest
-possible value closest to `n` such that it satisfies all constraints
+possible using a method akin to binary search since that would reduce the number of broken
+eggs to the smallest number on average given that we are testing half as many
+floors with each go as we continue searching for the one that breaks eggs
 
 Algorithm:
 
 ```
-def reduce_broken_eggs(f, n):
-    f = n + 1
-    return f
-```
+pass in a n, start, and end parameters
+  n is the number of floors
+  start is the start of the search area in range(n)
+  end is the end of the search area in range(n)
+set the offset to be equal to the (end - start) // 2
+set the midpoint to be the start + offset
+select the floor_attempt that is equal to range(n)[midpoint] where range is a range of sequential integers from 0 to n-1
 
-I have no idea how this would actually be accomplished in a concrete example.
-Maybe setting higher values of `f` equal to `n` is possible by putting eggs
-in little easter baskets with parachutes. I can only speak to what the
-problem specification detailed and there are no further details with which
-to design the optimal solution.
+while there are floors to search:
+if the floor_attempt breaks, search again with a midpoint between start and end-1
+else search again with a midpoint between start+1 and end
+
+return the highest floor
+```
